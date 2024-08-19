@@ -5,6 +5,7 @@ const path = require("path");
 const port = 3000;
 const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -21,8 +22,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Index Route
+// Connect To Database
+main()
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log(err));
 
+async function main() {
+  await mongoose.connect("mongodb://localhost:27017/tourBuddy");
+}
+
+// routes
 app.get("/", (req, res) => {
   res.send("Hello Boyyy");
 });
@@ -30,7 +39,6 @@ app.get("/", (req, res) => {
 app.get("/home", (req, res) => {
   res.render("./places/home");
 });
-
 
 // Start Server
 app.listen(port, () => {
