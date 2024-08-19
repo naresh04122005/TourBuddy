@@ -6,6 +6,7 @@ const port = 3000;
 const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const Place = require("./models/places.model");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -36,8 +37,33 @@ app.get("/", (req, res) => {
   res.send("Hello Boyyy");
 });
 
-app.get("/home", (req, res) => {
+// places routes
+app.get("/places", (req, res) => {
   res.render("./places/home");
+});
+
+app.get("/places/add", (req, res) => {
+  res.send("add places");
+});
+
+app.post("/places/add", (req, res) => {
+  const { title, description } = req.body;
+  const newPlace = new Place({
+    title,
+    description,
+  });
+
+  newPlace.save().then((place) => {
+    res.send("Place Added");
+  });
+});
+
+app.get("/places/edit", (req, res) => {
+  res.render("./places/edit");
+});
+
+app.get("/places/details", (req, res) => {
+  res.render("./places/details");
 });
 
 // Start Server
