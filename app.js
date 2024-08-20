@@ -90,13 +90,7 @@ app.get("/places/:id/edit", async (req, res) => {
 app.patch(
   "/places/:id",
   wrapAsync(async (req, res) => {
-    let { title, description, location, image } = req.body;
-    let place = await Place.findByIdAndUpdate(req.params.id, {
-      title,
-      description,
-      location,
-      image,
-    });
+    const place = await Place.findByIdAndUpdate(req.params.id, req.body);
     await place.save();
     res.redirect("/places/" + req.params.id);
   })
