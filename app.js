@@ -6,8 +6,12 @@ const port = 3000;
 const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 const methodOverride = require("method-override");
 const placesRoute = require("./routes/places.route");
+const User = require("./models/user.model");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -34,6 +38,28 @@ async function main() {
   await mongoose.connect("mongodb://localhost:27017/tourBuddy");
 }
 
+// Express session
+// Express Session Options
+const options = {
+  secret: "highlyprotectedsecret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+
+app.use(session(options));
+
+// Passport Config
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 // routes
 app.get("/", (req, res) => {
   res.send("Hello Boyyy");
@@ -41,6 +67,9 @@ app.get("/", (req, res) => {
 
 // places routes
 app.use("/places", placesRoute);
+
+// user routes
+app.use("/users", require("./routes/users.route"));
 
 // Catch-all for 404 errors
 app.all("*", (req, res, next) => {
