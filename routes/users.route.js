@@ -14,6 +14,7 @@ router.post("/register", async (req, res) => {
     const user = new User({ username, email });
     await User.register(user, password);
     passport.authenticate("local")(req, res, () => {
+      req.flash("success", "Welcome to TourBuddy!");
       res.redirect("/places");
     });
   } catch (err) {
@@ -28,11 +29,14 @@ router.get("/login", (req, res) => {
   res.render("users/login");
 });
 
+//login route with success and failure flash messages and redirect
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/places",
     failureRedirect: "/users/login",
+    failureFlash: true,
+    successRedirect: "/places",
+    successFlash: "Welcome back to TourBuddy!",
   })
 );
 
@@ -44,6 +48,7 @@ router.get("/logout", (req, res) => {
       return next(err);
     }
   });
+  req.flash("success", "Logged out successfully");
   res.redirect("/places");
 });
 
