@@ -7,9 +7,11 @@ const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const Place = require("./models/places.model");
+const methodOverride=require("method-override");
 
 //Milddleware setup
 app.use(cookieParser());
+app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
 // Set Static Folder
@@ -38,17 +40,18 @@ app.get("/", (req, res) => {
 });
 
 // places routes
-app.get("/places", (req, res) => {
- let places=Place.find();
-  res.render("./places/home",{places});
+app.get("/places", async (req, res) => {
+  let places = await Place.find();
+  console.log(places);
+  res.render("./places/home", { places: places });
 });
 
 app.get("/places/add", (req, res) => {
-  res.send("add places");
+  res.render("./places/add.ejs");
 });
 
 app.post("/places/add", (req, res) => {
-  const { title, description,location,image } = req.body;
+  const { title, description, location, image } = req.body;
   const newPlace = new Place({
     title,
     description,
@@ -57,16 +60,14 @@ app.post("/places/add", (req, res) => {
   });
 
   newPlace.save();
-  res.redirect("/places/home");
+  res.redirect("/places");
 });
 
-app.get("/places/edit", (req, res) => {
-  res.render("./places/edit");
+app.get("/places/:id", async(req, res) => {
+  let place=await Place.findById(req.params.id);
+  res.render("./places/show.ejs",{place:place});
 });
 
-app.get("/places/details", (req, res) => {
-  res.render("./places/details");
-});
 
 // Start Server
 app.listen(port, () => {
