@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const Place = require("./models/places.model");
 const methodOverride = require("method-override");
 const wrapAsync = require("./utils/wrapAsync");
+const { wrap } = require("module");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -45,8 +46,7 @@ app.get(
   "/places",
   wrapAsync(async (req, res) => {
     let places = await Place.find();
-    console.log(places);
-    res.render("./places/home", { places: places });
+    res.render("./places/home.ejs", { places: places });
   })
 );
 
@@ -66,7 +66,7 @@ app.post(
     });
 
     await newPlace.save();
-    res.redirect("/places/home");
+    res.redirect("/places");
   })
 );
 
@@ -78,13 +78,38 @@ app.get(
   })
 );
 
-app.get("/places/:id/edit", (req, res) => {
-  res.send("edit place");
+app.get("/places/:id/edit", async (req, res) => {
+  let place = await Place.findById(req.params.id);
+  if (!place) {
+    req.flash("error", "Cannot find that place");
+    return res.redirect("/places");
+  }
+  res.render("./places/edit.ejs", { place: place });
 });
 
-app.get("/places/:id/delete", (req, res) => {
-  res.send("delete place");
-});
+app.patch(
+  "/places/:id",
+  wrapAsync(async (req, res) => {
+    let { title, description, location, image } = req.body;
+    let place = await Place.findByIdAndUpdate(req.params.id, {
+      title,
+      description,
+      location,
+      image,
+    });
+    await place.save();
+    res.redirect("/places/" + req.params.id);
+  })
+);
+
+app.delete(
+  "/places/:id",
+  wrapAsync(async (req, res) => {
+    let place = await Place.findByIdAndDelete(req.params.id);
+    console.log(place);
+    res.redirect("/places");
+  })
+);
 
 // Catch-all for 404 errors
 app.all("*", (req, res, next) => {
