@@ -1,0 +1,75 @@
+<% layout('./layouts/boilerplate') -%>
+<body>
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-6">
+      <h1 style="text-align: center">Update Details</h1>
+      <br />
+      <form
+        method="POST"
+        action="/listings/<%= place._id %>?_method=PATCH"
+        novalidate
+        class="needs-validation"
+      >
+        <div>
+          <label for="title" class="form-label">Title:</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            value="<%= place.title %>"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please enter a valid title.</div>
+        </div>
+        <div>
+          <label for="description" class="form-label">Description:</label>
+          <textarea
+            name="description"
+            id="description"
+            rows="3"
+            class="form-control"
+            required
+          >
+<%= place.description %></textarea
+          >
+          <div class="invalid-feedback">Please write a short description.</div>
+        </div>
+        <div>
+          <label for="image" class="form-label">Upload New Image:</label>
+          <input
+            type="text"
+            name="image"
+            id="image"
+            class="form-control"
+            value="<%= place.image %>"
+          />
+        </div>
+        <div>
+          <label for="location" class="form-label">Location:</label>
+          <input
+            type="text"
+            name="location"
+            id="location"
+            class="form-control"
+            required
+            value="<%= place.location %>"
+          />
+          <div class="invalid-feedback">Please choose a location.</div>
+        </div>
+
+        <br />
+        <div style="display: flex; justify-content: center">
+          <button
+            type="submit"
+            class="btn btn-primary fw-bold"
+            style="background-color: #fe424d; border: none"
+          >
+            Update Details
+          </button>
+        </div>
+        <br />
+      </form>
+    </div>
+  </div>
+</body>
