@@ -1,0 +1,71 @@
+<% layout('./layouts/boilerplate') -%>
+<body>
+  <div style="margin: 2px">
+    <h1 style="text-align: center">Add a new place</h1>
+    <div class="row d-flex justify-content-center">
+      <div class="col-lg-6">
+        <form
+          method="POST"
+          action="/places/add"
+          novalidate
+          class="needs-validation"
+        >
+          <div>
+            <label for="title" class="form-label">Title:</label>
+            <br />
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Add a title.."
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid title.</div>
+          </div>
+          <div>
+            <label for="description" class="form-label">Description:</label>
+            <textarea
+              name="description"
+              id="description"
+              class="form-control"
+              placeholder="Description.."
+              required
+            ></textarea>
+            <div class="invalid-feedback">
+              Please write a short description.
+            </div>
+          </div>
+          <div>
+            <label for="image" class="form-label">Upload Image:</label>
+            <input type="text" name="image" class="form-control" required />
+          </div>
+          <div>
+            <label for="location" class="form-label">Location:</label>
+            <input
+              type="text"
+              name="location"
+              id="location"
+              class="form-control"
+              placeholder="Provide Location"
+              required
+            />
+            <div class="invalid-feedback">Please choose a location.</div>
+          </div>
+          <br />
+          <div style="display: flex; justify-content: center">
+            <button
+              type="submit"
+              class="btn btn-primary fw-bold"
+              style="background-color: #fe424d; border: none"
+            >
+              List Place
+            </button>
+          </div>
+          <br />
+          <br />
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
