@@ -13,6 +13,7 @@ const methodOverride = require("method-override");
 const placesRoute = require("./routes/places.route");
 const User = require("./models/user.model");
 
+
 //Milddleware setup
 app.use(cookieParser());
 app.use(methodOverride("_method"));
