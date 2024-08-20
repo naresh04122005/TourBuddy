@@ -3,6 +3,7 @@ const router = express.Router();
 const Place = require("../models/places.model");
 const wrapAsync = require("../utils/wrapAsync");
 const { validatePlace } = require("../utils/validatePlace");
+const isLoggedIn = require("../utils/isLoggedIn");
 
 router.get(
   "/",
@@ -18,6 +19,7 @@ router.get("/add", (req, res) => {
 
 router.post(
   "/add",
+  isLoggedIn,
   validatePlace,
   wrapAsync(async (req, res) => {
     const { title, description, location, image } = req.body;
@@ -37,7 +39,7 @@ router.post(
 router.get(
   "/:id",
   wrapAsync(async (req, res) => {
-    let place = await Place.findById(req.params.id);
+    let place = await Place.findById(req.params.id).populate("addedBy");
     if (!place) {
       req.flash("error", "Cannot find that place");
       return res.redirect("/places");
@@ -46,17 +48,22 @@ router.get(
   })
 );
 
-router.get("/:id/edit", async (req, res) => {
-  let place = await Place.findById(req.params.id);
-  if (!place) {
-    req.flash("error", "Cannot find that place");
-    return res.redirect("/places");
-  }
-  res.render("./places/edit.ejs", { place: place });
-});
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  wrapAsync(async (req, res) => {
+    let place = await Place.findById(req.params.id);
+    if (!place) {
+      req.flash("error", "Cannot find that place");
+      return res.redirect("/places");
+    }
+    res.render("./places/edit.ejs", { place: place });
+  })
+);
 
 router.patch(
   "/:id",
+  isLoggedIn,
   validatePlace,
   wrapAsync(async (req, res) => {
     const place = await Place.findByIdAndUpdate(req.params.id, req.body);
@@ -68,6 +75,7 @@ router.patch(
 
 router.delete(
   "/:id",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     await Place.findByIdAndDelete(req.params.id);
     req.flash("success", "Successfully deleted place");
