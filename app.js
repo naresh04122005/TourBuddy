@@ -7,9 +7,8 @@ const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const Place = require("./models/places.model");
-const methodOverride=require("method-override");
+const methodOverride = require("method-override");
 const wrapAsync = require("./utils/wrapAsync");
-
 
 //Milddleware setup
 app.use(cookieParser());
@@ -68,10 +67,13 @@ app.post(
   })
 );
 
-app.get("/places/:id", async(req, res) => {
-  let place=await Place.findById(req.params.id);
-  res.render("./places/show.ejs",{place:place});
-});
+app.get(
+  "/places/:id",
+  wrapAsync(async (req, res) => {
+    let place = await Place.findById(req.params.id);
+    res.render("./places/show.ejs", { place: place });
+  })
+);
 
 app.get("/places/:id/edit", (req, res) => {
   res.send("edit place");
@@ -81,10 +83,15 @@ app.get("/places/:id/delete", (req, res) => {
   res.send("delete place");
 });
 
+// Catch-all for 404 errors
+app.all("*", (req, res, next) => {
+  next(new Error("Page Not Found", 404));
+});
+
 // Error Handler
 app.use((err, req, res, next) => {
   let { status = 500, message = "Something went wrong" } = err;
-  res.status(status).render("./listings/error.ejs", { status, message });
+  res.status(status).render("./places/error.ejs", { status, message });
 });
 
 // Start Server
