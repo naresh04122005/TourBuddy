@@ -41,11 +41,14 @@ app.get("/", (req, res) => {
 });
 
 // places routes
-app.get("/places", async (req, res) => {
-  let places = await Place.find();
-  console.log(places);
-  res.render("./places/home", { places: places });
-});
+app.get(
+  "/places",
+  wrapAsync(async (req, res) => {
+    let places = await Place.find();
+    console.log(places);
+    res.render("./places/home", { places: places });
+  })
+);
 
 app.get("/places/add", (req, res) => {
   res.render("./places/add.ejs");
