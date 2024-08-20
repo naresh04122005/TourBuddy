@@ -7,6 +7,7 @@ const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const Place = require("./models/places.model");
+const wrapAsync = require("./utils/wrapAsync");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -38,34 +39,56 @@ app.get("/", (req, res) => {
 });
 
 // places routes
-app.get("/places", (req, res) => {
- let places=Place.find();
-  res.render("./places/home",{places});
-});
+app.get(
+  "/places",
+  wrapAsync(async (req, res) => {
+    let places = await Place.find();
+    res.render("./places/home", { places });
+  })
+);
 
 app.get("/places/add", (req, res) => {
   res.send("add places");
 });
 
-app.post("/places/add", (req, res) => {
-  const { title, description,location,image } = req.body;
-  const newPlace = new Place({
-    title,
-    description,
-    location,
-    image,
-  });
+app.post(
+  "/places/add",
+  wrapAsync(async (req, res) => {
+    const { title, description, location, image } = req.body;
+    const newPlace = new Place({
+      title,
+      description,
+      location,
+      image,
+    });
 
-  newPlace.save();
-  res.redirect("/places/home");
-});
+    await newPlace.save();
+    res.redirect("/places/home");
+  })
+);
 
 app.get("/places/edit", (req, res) => {
   res.render("./places/edit");
 });
 
-app.get("/places/details", (req, res) => {
-  res.render("./places/details");
+app.get("places/:id", async (req, res) => {
+  let place = await Place.findById(req.params.id);
+  
+  res.send("place details");
+});
+
+app.get("/places/:id/edit", (req, res) => {
+  res.send("edit place");
+});
+
+app.get("/places/:id/delete", (req, res) => {
+  res.send("delete place");
+});
+
+// Error Handler
+app.use((err, req, res, next) => {
+  let { status = 500, message = "Something went wrong" } = err;
+  res.status(status).render("./listings/error.ejs", { status, message });
 });
 
 // Start Server
