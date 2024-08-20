@@ -83,6 +83,9 @@ app.use("/places", placesRoute);
 // user routes
 app.use("/users", require("./routes/users.route"));
 
+// review routes
+app.use("/places/:id/reviews", require("./routes/review.route"));
+
 // Catch-all for 404 errors
 app.all("*", (req, res, next) => {
   next(new Error("Page Not Found", 404));

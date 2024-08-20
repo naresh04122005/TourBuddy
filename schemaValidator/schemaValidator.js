@@ -7,4 +7,9 @@ const placeSchemaValidator = Joi.object({
   location: Joi.string().required(),
 });
 
-module.exports = { placeSchemaValidator };
+const reviewSchemaValidator = Joi.object({
+  rating: Joi.number().min(1).max(5).required(),
+  review: Joi.string().required(),
+});
+
+module.exports = { placeSchemaValidator, reviewSchemaValidator };
