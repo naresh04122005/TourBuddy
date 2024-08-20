@@ -6,10 +6,13 @@ const port = 3000;
 const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const Place = require("./models/places.model");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 const methodOverride = require("method-override");
-const wrapAsync = require("./utils/wrapAsync");
-const { wrap } = require("module");
+const placesRoute = require("./routes/places.route");
+const User = require("./models/user.model");
+const flash = require("connect-flash");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -36,74 +39,49 @@ async function main() {
   await mongoose.connect("mongodb://localhost:27017/tourBuddy");
 }
 
+// Express session
+// Express Session Options
+const options = {
+  secret: "highlyprotectedsecret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+
+app.use(session(options));
+
+// Connect Flash
+app.use(flash());
+
+// Passport Config
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Middleware to make flash messages available to views
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currentUser = req.user;
+  next();
+});
+
 // routes
 app.get("/", (req, res) => {
   res.send("Hello Boyyy");
 });
 
 // places routes
-app.get(
-  "/places",
-  wrapAsync(async (req, res) => {
-    let places = await Place.find();
-    res.render("./places/home.ejs", { places: places });
-  })
-);
+app.use("/places", placesRoute);
 
-app.get("/places/add", (req, res) => {
-  res.render("./places/add.ejs");
-});
-
-app.post(
-  "/places/add",
-  wrapAsync(async (req, res) => {
-    const { title, description, location, image } = req.body;
-    const newPlace = new Place({
-      title,
-      description,
-      location,
-      image,
-    });
-
-    await newPlace.save();
-    res.redirect("/places");
-  })
-);
-
-app.get(
-  "/places/:id",
-  wrapAsync(async (req, res) => {
-    let place = await Place.findById(req.params.id);
-    res.render("./places/show.ejs", { place: place });
-  })
-);
-
-app.get("/places/:id/edit", async (req, res) => {
-  let place = await Place.findById(req.params.id);
-  if (!place) {
-    req.flash("error", "Cannot find that place");
-    return res.redirect("/places");
-  }
-  res.render("./places/edit.ejs", { place: place });
-});
-
-app.patch(
-  "/places/:id",
-  wrapAsync(async (req, res) => {
-    const place = await Place.findByIdAndUpdate(req.params.id, req.body);
-    await place.save();
-    res.redirect("/places/" + req.params.id);
-  })
-);
-
-app.delete(
-  "/places/:id",
-  wrapAsync(async (req, res) => {
-    let place = await Place.findByIdAndDelete(req.params.id);
-    console.log(place);
-    res.redirect("/places");
-  })
-);
+// user routes
+app.use("/users", require("./routes/users.route"));
 
 // Catch-all for 404 errors
 app.all("*", (req, res, next) => {
