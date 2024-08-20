@@ -39,7 +39,8 @@ app.get("/", (req, res) => {
 
 // places routes
 app.get("/places", (req, res) => {
-  res.render("./places/home");
+ let places=Place.find();
+  res.render("./places/home",{places});
 });
 
 app.get("/places/add", (req, res) => {
@@ -47,15 +48,16 @@ app.get("/places/add", (req, res) => {
 });
 
 app.post("/places/add", (req, res) => {
-  const { title, description } = req.body;
+  const { title, description,location,image } = req.body;
   const newPlace = new Place({
     title,
     description,
+    location,
+    image,
   });
 
-  newPlace.save().then((place) => {
-    res.send("Place Added");
-  });
+  newPlace.save();
+  res.redirect("/places/home");
 });
 
 app.get("/places/edit", (req, res) => {
