@@ -25,3 +25,41 @@ body{
     color:#222222 !important;
     font-weight: 500 !important;
 }
+
+/* Footer  */
+
+footer{
+    background-color: #d1caca;
+    color: black;
+    padding: 0.3rem 0;
+    text-align: center;
+}
+
+.f-info-links a{
+    color: black;
+    font-size: 0.9rem;
+    margin: 0rem;
+    text-decoration: none;
+}
+
+.f-info-links a:hover{
+    color: #fe424d;
+    text-decoration: underline;
+}
+
+.f-info-socials i{
+    font-size: 1.3rem;
+    color: #222222;
+    margin: 0.5rem;
+}
+
+.f-info-socials i:hover{
+    color: white;
+    cursor: pointer;
+
+}
+
+.f-company-name{
+    font-size: 1.2rem;
+    font-weight: 500;
+}
