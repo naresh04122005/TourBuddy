@@ -12,7 +12,7 @@ const LocalStrategy = require("passport-local");
 const methodOverride = require("method-override");
 const placesRoute = require("./routes/places.route");
 const User = require("./models/user.model");
-
+const flash = require("connect-flash");
 
 //Milddleware setup
 app.use(cookieParser());
@@ -53,6 +53,9 @@ const options = {
 };
 
 app.use(session(options));
+
+// Connect Flash
+app.use(flash());
 
 // Passport Config
 app.use(passport.initialize());
