@@ -13,7 +13,7 @@ router.get(
   })
 );
 
-router.get("/add", (req, res) => {
+router.get("/add", isLoggedIn, (req, res) => {
   res.render("./places/add.ejs");
 });
 
@@ -30,6 +30,7 @@ router.post(
       image,
     });
 
+    newPlace.addedBy = req.user._id;
     await newPlace.save();
     req.flash("success", "Successfully created a new place");
     res.redirect("/places");

@@ -12,7 +12,7 @@
   </div>
 
   <div class="container d-flex justify-content-center">
-    <h5>Added by <%= place.addedBy.username %></h5>
+    <h6>Added by <%= place.addedBy.username %></h6>
   </div>
 
   <div class="container d-flex justify-content-center">
@@ -24,6 +24,7 @@
       <h5><%= place.location %></h5>
     </div>
   </div>
+  <br>
 
   <div style="display: flex; justify-content: center; gap: 20px">
     <form method="GET" action="/places/<%= place._id %>/edit">
