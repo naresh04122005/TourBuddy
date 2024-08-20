@@ -8,6 +8,8 @@ var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const Place = require("./models/places.model");
 const methodOverride=require("method-override");
+const wrapAsync = require("./utils/wrapAsync");
+
 
 //Milddleware setup
 app.use(cookieParser());
@@ -50,24 +52,40 @@ app.get("/places/add", (req, res) => {
   res.render("./places/add.ejs");
 });
 
-app.post("/places/add", (req, res) => {
-  const { title, description, location, image } = req.body;
-  const newPlace = new Place({
-    title,
-    description,
-    location,
-    image,
-  });
+app.post(
+  "/places/add",
+  wrapAsync(async (req, res) => {
+    const { title, description, location, image } = req.body;
+    const newPlace = new Place({
+      title,
+      description,
+      location,
+      image,
+    });
 
-  newPlace.save();
-  res.redirect("/places");
-});
+    await newPlace.save();
+    res.redirect("/places/home");
+  })
+);
 
 app.get("/places/:id", async(req, res) => {
   let place=await Place.findById(req.params.id);
   res.render("./places/show.ejs",{place:place});
 });
 
+app.get("/places/:id/edit", (req, res) => {
+  res.send("edit place");
+});
+
+app.get("/places/:id/delete", (req, res) => {
+  res.send("delete place");
+});
+
+// Error Handler
+app.use((err, req, res, next) => {
+  let { status = 500, message = "Something went wrong" } = err;
+  res.status(status).render("./listings/error.ejs", { status, message });
+});
 
 // Start Server
 app.listen(port, () => {
