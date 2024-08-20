@@ -1,22 +1,24 @@
 <% layout('./layouts/boilerplate') -%>
 <body>
-  <h1 style="text-align: center;">All Places</h1>
+  <h1 style="text-align: center;">ALL PLACES</h1>
   <div>
     <div class="all-listings">
-      <a href="#">
+      <% for(let place of places) { %>
+      <a href="/places/<%= place._id %>">
       <div class="card listing-card" style="width: 18rem">
-        <img src="#" class="card-img-top" alt="..." height="300px" width="200px" />
+        <img src="<%= place.image %>" class="card-img-top" alt="..." height="300px" width="200px" />
         <div class="card-img-overlay"></div>
         <div class="card-body">
           <p class="card-text">
-            title
+            <%= place.title %>
             <br>  
-           description
+           <%= place.description %>
+
           </p>
         </div>
       </div>
       </a>
-
+      <% } %>
     </div>
   </div>
 </body>

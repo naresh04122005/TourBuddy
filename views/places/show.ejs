@@ -1,0 +1,45 @@
+<% layout('./layouts/boilerplate') -%>
+<body>
+  <div class="row">
+    <div class="mt-2 d-flex justify-content-center">
+      <img
+        src="<%= place.image %>"
+        class="img-fluid rounded mx-auto"
+        width="300vh"
+        alt="Listing_Image"
+      />
+    </div>
+  </div>
+
+  <div class="container d-flex justify-content-center">
+    <h1><%= place.title %></h1>
+  </div>
+
+  <div class="individualListingContent">
+    <div class="container d-flex justify-content-center">
+      <h5><%= place.location %></h5>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 20px">
+    <form method="GET" action="/places/<%= place._id %>/edit">
+      <button
+        type="submit"
+        class="btn btn-primary fw-bold"
+        style="background-color: #fe424d; border: none"
+      >
+        EDIT
+      </button>
+    </form>
+
+    <form method="POST" action="/places/<%= place._id %>?_method=DELETE">
+      <button
+        type="submit"
+        class="btn btn-primary fw-bold"
+        style="background-color: #090909; border: none"
+      >
+        DELETE
+      </button>
+    </form>
+  </div>
+</body>

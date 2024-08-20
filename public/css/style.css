@@ -63,3 +63,86 @@ footer{
     font-size: 1.2rem;
     font-weight: 500;
 }
+
+/* All Listings  */
+
+.all-listings{
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    justify-content: center;
+    /* margin: 1rem 1rem; */
+    /* background-color: black; */
+}
+
+.listing-card{
+    margin: 1rem;
+    width: 18rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.all-listings a{
+    text-decoration: none;
+    color: black;
+}
+
+/* Card Effect */
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card:hover .card-img-overlay{
+    opacity: 0.4;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.5s;
+}
+
+
+/* Show Page  */
+
+.show-image{
+    height: 60vh;
+    object-fit: cover;
+    border-radius: 10px;
+    width: 80%;
+    margin: 1rem auto;
+}
+
+/* All Listings  */
+
+.all-listings{
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    justify-content: center;
+    /* margin: 1rem 1rem; */
+    /* background-color: black; */
+}
+
+.listing-card{
+    margin: 1rem;
+    width: 18rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.all-listings a{
+    text-decoration: none;
+    color: black;
+}
+
+/* Card Effect */
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card:hover .card-img-overlay{
+    opacity: 0.4;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.5s;
+}
