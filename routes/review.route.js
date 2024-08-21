@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 const Review = require("../models/reviews.model");
 const Place = require("../models/places.model");
 const isLoggedIn = require("../utils/isLoggedIn");
@@ -23,14 +23,14 @@ router.post(
 );
 
 router.delete(
-  "/:placeId/:reviewId",
+  "/:reviewId",
   isLoggedIn,
   wrapAsync(async (req, res) => {
-    const { placeId, reviewId } = req.params;
-    await Place.findByIdAndUpdate(placeId, { $pull: { reviews: reviewId } });
+    const { id, reviewId } = req.params;
+    await Place.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
     req.flash("success", "Review deleted successfully");
-    res.redirect(`/places/${placeId}`);
+    res.redirect(`/places/${id}`);
   })
 );
 

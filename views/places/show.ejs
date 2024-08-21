@@ -50,4 +50,82 @@
   </div>
   <% } %>
   <br>
+  <hr> 
+
+ <% if(currentUser){ %>
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-7">
+      <h3>Leave a comment:</h3>
+      <form method="POST" action="/places/<%= place._id %>/reviews/add" novalidate class="needs-validation">
+        <div class="mb-1">
+          <label for="rating" class="form-label">Rate us:</label>
+          <!-- <input type="range" class="form-range" min="1" max="5" id="rating" name="rating"> -->
+
+          <fieldset class="starability-heartbeat">
+            <!-- <legend></legend> -->
+            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="1" checked aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="rating" value="1" />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="rating" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="rating" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="rating" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="rating" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+          </fieldset>
+
+
+        </div>
+
+
+        <div class="mb-3">
+          <label for="review" class="form-label">Comment:</label>
+          <textarea class="form-control" id="review" name="review" rows="3" placeholder="Leave a comment.." required></textarea>
+          <div class="invalid-feedback">
+            Please leave a comment..
+          </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+          <button
+            type="submit"
+            class="btn btn-outline-secondary"
+          >
+            SUBMIT
+          </button>
+        </div>
+      </form>
+    </div>  
+  </div>
+  <hr />
+<% } %>
+  <div class="mb-3">
+    <p><b>All reviews:</b></p>
+    <div class="row">
+      <% for(let review of place.reviews) { %>
+        <div class="card col-md-4 mb-3 offset-md-1">
+          <div class="card-body">
+            <b>~<%= review.createdBy.username %></b>
+            <h5 class="card-title d-flex justify-content-between">
+              <p class="starability-result" data-rating="<%= review.rating %>">
+                Rated: 3 stars
+              </p>
+              <small><%= review.createdAt.toDateString().split(" ").join(", ") %></small>
+            </h5>
+            <div class="d-flex justify-content-between">
+              <div class="card-text me-2"><%= review.review %></div>
+             
+          <% if (currentUser && currentUser._id.equals(review.createdBy._id)) { %>
+            <form method="POST" action="/places/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+              <button type="submit" class="btn btn-sm btn-dark align-self-bottom">DELETE</button>
+            </form>
+            <% } %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
 </body>

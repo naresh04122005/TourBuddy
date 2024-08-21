@@ -41,7 +41,10 @@ router.post(
 router.get(
   "/:id",
   wrapAsync(async (req, res) => {
-    let place = await Place.findById(req.params.id).populate("addedBy");
+    let place = await Place.findById(req.params.id)
+    .populate({ path: "reviews", populate: { path: "createdBy" } })
+    .populate("addedBy");
+    // console.log(place);
     if (!place) {
       req.flash("error", "Cannot find that place");
       return res.redirect("/places");
