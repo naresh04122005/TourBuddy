@@ -4,6 +4,7 @@ const Place = require("../models/places.model");
 const wrapAsync = require("../utils/wrapAsync");
 const { validatePlace } = require("../utils/validatePlace");
 const isLoggedIn = require("../utils/isLoggedIn");
+const isOwner = require("../utils/isOwner");
 
 router.get(
   "/",
@@ -65,6 +66,7 @@ router.get(
 router.patch(
   "/:id",
   isLoggedIn,
+  isOwner,
   validatePlace,
   wrapAsync(async (req, res) => {
     const place = await Place.findByIdAndUpdate(req.params.id, req.body);
@@ -77,6 +79,7 @@ router.patch(
 router.delete(
   "/:id",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     await Place.findByIdAndDelete(req.params.id);
     req.flash("success", "Successfully deleted place");

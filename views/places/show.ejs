@@ -26,6 +26,7 @@
   </div>
   <br>
 
+  <% if (currentUser && currentUser._id.equals(place.addedBy._id)) { %>
   <div style="display: flex; justify-content: center; gap: 20px">
     <form method="GET" action="/places/<%= place._id %>/edit">
       <button
@@ -47,5 +48,6 @@
       </button>
     </form>
   </div>
+  <% } %>
   <br>
 </body>

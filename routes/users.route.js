@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
 const passport = require("passport");
+const saveRedirectUrl = require("../utils/redirectUrl");
 
 // Register
 router.get("/register", (req, res) => {
@@ -30,15 +31,24 @@ router.get("/login", (req, res) => {
 });
 
 //login route with success and failure flash messages and redirect
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    failureRedirect: "/users/login",
-    failureFlash: true,
-    successRedirect: "/places",
-    successFlash: "Welcome back to TourBuddy!",
-  })
-);
+router.post("/login", saveRedirectUrl, (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash("error", info.message || "Login failed");
+      return res.redirect("/users/login");
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash("success", "Welcome back to TourBuddy!");
+      res.redirect(res.locals.redirectUrl || "/places");
+    });
+  })(req, res, next);
+});
 
 // Logout
 

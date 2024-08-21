@@ -14,6 +14,15 @@ const placesRoute = require("./routes/places.route");
 const User = require("./models/user.model");
 const flash = require("connect-flash");
 
+// Connect To Database
+main()
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log(err));
+
+async function main() {
+  await mongoose.connect("mongodb://localhost:27017/tourBuddy");
+}
+
 //Milddleware setup
 app.use(cookieParser());
 app.use(methodOverride("_method"));
@@ -30,16 +39,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Connect To Database
-main()
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log(err));
-
-async function main() {
-  await mongoose.connect("mongodb://localhost:27017/tourBuddy");
-}
-
-// Express session
 // Express Session Options
 const options = {
   secret: "highlyprotectedsecret",
