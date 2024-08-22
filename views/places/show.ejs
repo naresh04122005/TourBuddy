@@ -117,7 +117,7 @@
               <div class="card-text me-2"><%= review.review %></div>
              
           <% if (currentUser && currentUser._id.equals(review.createdBy._id)) { %>
-            <form method="POST" action="/places/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+            <form method="POST" action="/places/<%= place._id %>/reviews/<%= review._id %>?_method=DELETE">
               <button type="submit" class="btn btn-sm btn-dark align-self-bottom">DELETE</button>
             </form>
             <% } %>

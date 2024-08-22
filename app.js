@@ -92,6 +92,7 @@ app.all("*", (req, res, next) => {
 
 // Error Handler
 app.use((err, req, res, next) => {
+  // console.log(err);
   let { status = 500, message = "Something went wrong" } = err;
   res.status(status).render("./places/error.ejs", { status, message });
 });
