@@ -45,7 +45,9 @@ router.post("/login", saveRedirectUrl, (req, res, next) => {
         return next(err);
       }
       req.flash("success", "Welcome back to TourBuddy!");
-      res.redirect(res.locals.redirectUrl || "/places");
+      const redirectUrl = res.locals.redirectUrl|| "/places";
+      // console.log(redirectUrl,"redirectUrl");
+      res.redirect(redirectUrl);
     });
   })(req, res, next);
 });

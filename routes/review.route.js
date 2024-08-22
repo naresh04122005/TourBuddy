@@ -12,7 +12,7 @@ router.post(
   validateReview,
   wrapAsync(async (req, res) => {
     const place = await Place.findById(req.params.id);
-    const review = new Review(req.body.review);
+    const review = new Review(req.body);
     review.createdBy = req.user._id;
     place.reviews.push(review._id);
     await review.save();
