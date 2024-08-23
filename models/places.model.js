@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const cloudinary = require("../config/cloudConfig");
 
 const placeSchema = new Schema(
   {
@@ -17,6 +18,10 @@ const placeSchema = new Schema(
     },
     image: {
       type: String,
+      required: true,
+    },
+    imageId: {
+      type: String,  
       required: true,
     },
     addedBy: {

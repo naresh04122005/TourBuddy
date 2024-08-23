@@ -9,6 +9,7 @@
         action="/places/<%= place._id %>?_method=PATCH"
         novalidate
         class="needs-validation"
+        enctype="multipart/form-data"
       >
         <div>
           <label for="title" class="form-label">Title:</label>
@@ -38,7 +39,7 @@
         <div>
           <label for="image" class="form-label">Upload New Image:</label>
           <input
-            type="text"
+            type="file"
             name="image"
             id="image"
             class="form-control"
