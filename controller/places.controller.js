@@ -1,22 +1,32 @@
 const Place = require("../models/places.model");
 const Review = require("../models/reviews.model");
 const cloudinary = require("../config/cloudConfig");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.addNewPlace = async (req, res) => {
   const { title, description, location } = req.body;
 
+  let response = await geocodingClient
+    .forwardGeocode({
+      query: location,
+      limit: 1,
+    })
+    .send();
+
+    // console.log(response.body.features[0].geometry);
+
   const result = await cloudinary.uploader.upload(req.file.path);
-  // console.log(result);
   const image = result.secure_url;
   const imageId = result.public_id;
-  // console.log(image);
-  // console.log(imageId);
   const newPlace = new Place({
     title,
     description,
     location,
     image,
     imageId,
+    geometry: response.body.features[0].geometry,
   });
   newPlace.addedBy = req.user._id;
   await newPlace.save();
@@ -91,8 +101,6 @@ module.exports.updatePlace = async (req, res) => {
   }
 };
 
-
-
 module.exports.deletePlace = async (req, res) => {
   try {
     // Find and delete the place by ID
@@ -120,6 +128,3 @@ module.exports.deletePlace = async (req, res) => {
     res.redirect("/places");
   }
 };
-
-
-

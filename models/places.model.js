@@ -21,7 +21,7 @@ const placeSchema = new Schema(
       required: true,
     },
     imageId: {
-      type: String,  
+      type: String,
       required: true,
     },
     addedBy: {
@@ -34,6 +34,17 @@ const placeSchema = new Schema(
         ref: "Review",
       },
     ],
+    geometry: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
   },
   {
     timestamps: true,

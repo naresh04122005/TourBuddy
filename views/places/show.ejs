@@ -1,4 +1,8 @@
 <% layout('./layouts/boilerplate') -%>
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const coordinates = <%- JSON.stringify(place.geometry.coordinates) %>;
+</script>
 <body>
   <div class="row">
     <div class="mt-2 d-flex justify-content-center">
@@ -24,7 +28,7 @@
       <h5><%= place.location %></h5>
     </div>
   </div>
-  <br>
+  <br />
 
   <% if (currentUser && currentUser._id.equals(place.addedBy._id)) { %>
   <div style="display: flex; justify-content: center; gap: 20px">
@@ -49,21 +53,35 @@
     </form>
   </div>
   <% } %>
-  <br>
-  <hr> 
+  <br />
 
- <% if(currentUser){ %>
+  <% if(currentUser){ %>
+  <hr />
+
   <div class="row d-flex justify-content-center">
     <div class="col-md-7">
       <h3>Leave a comment:</h3>
-      <form method="POST" action="/places/<%= place._id %>/reviews/add" novalidate class="needs-validation">
+      <form
+        method="POST"
+        action="/places/<%= place._id %>/reviews/add"
+        novalidate
+        class="needs-validation"
+      >
         <div class="mb-1">
           <label for="rating" class="form-label">Rate us:</label>
           <!-- <input type="range" class="form-range" min="1" max="5" id="rating" name="rating"> -->
 
           <fieldset class="starability-heartbeat">
             <!-- <legend></legend> -->
-            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="1" checked aria-label="No rating." />
+            <input
+              type="radio"
+              id="no-rate"
+              class="input-no-rate"
+              name="rating"
+              value="1"
+              checked
+              aria-label="No rating."
+            />
             <input type="radio" id="first-rate1" name="rating" value="1" />
             <label for="first-rate1" title="Terrible">1 star</label>
             <input type="radio" id="first-rate2" name="rating" value="2" />
@@ -75,59 +93,102 @@
             <input type="radio" id="first-rate5" name="rating" value="5" />
             <label for="first-rate5" title="Amazing">5 stars</label>
           </fieldset>
-
-
         </div>
-
 
         <div class="mb-3">
           <label for="review" class="form-label">Comment:</label>
-          <textarea class="form-control" id="review" name="review" rows="3" placeholder="Leave a comment.." required></textarea>
-          <div class="invalid-feedback">
-            Please leave a comment..
-          </div>
+          <textarea
+            class="form-control"
+            id="review"
+            name="review"
+            rows="3"
+            placeholder="Leave a comment.."
+            required
+          ></textarea>
+          <div class="invalid-feedback">Please leave a comment..</div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
-          <button
-            type="submit"
-            class="btn btn-outline-secondary"
-          >
+          <button type="submit" class="btn btn-outline-secondary">
             SUBMIT
           </button>
         </div>
       </form>
-    </div>  
+    </div>
   </div>
-<% } %>
-<% if(place.reviews.length>0) {%>
+  <% } %> <% if(place.reviews.length>0) {%>
   <hr />
   <div class="mb-3">
     <p><b>All comments:</b></p>
     <div class="row">
       <% for(let review of place.reviews) { %>
-        <div class="card col-md-4 mb-3 offset-md-1">
-          <div class="card-body">
-            <b>~<%= review.createdBy.username %></b>
-            <h5 class="card-title d-flex justify-content-between">
-              <p class="starability-result" data-rating="<%= review.rating %>">
-                Rated: 3 stars
-              </p>
-              <small><%= review.createdAt.toDateString().split(" ").join(", ") %></small>
-            </h5>
-            <div class="d-flex justify-content-between">
-              <div class="card-text me-2"><%= review.review %></div>
-             
-          <% if (currentUser && currentUser._id.equals(review.createdBy._id)) { %>
-            <form method="POST" action="/places/<%= place._id %>/reviews/<%= review._id %>?_method=DELETE">
-              <button type="submit" class="btn btn-sm btn-dark align-self-bottom">DELETE</button>
+      <div class="card col-md-4 mb-3 offset-md-1">
+        <div class="card-body">
+          <b>~<%= review.createdBy.username %></b>
+          <h5 class="card-title d-flex justify-content-between">
+            <p class="starability-result" data-rating="<%= review.rating %>">
+              Rated: 3 stars
+            </p>
+            <small
+              ><%= review.createdAt.toDateString().split(" ").join(", ")
+              %></small
+            >
+          </h5>
+          <div class="d-flex justify-content-between">
+            <div class="card-text me-2"><%= review.review %></div>
+
+            <% if (currentUser && currentUser._id.equals(review.createdBy._id))
+            { %>
+            <form
+              method="POST"
+              action="/places/<%= place._id %>/reviews/<%= review._id %>?_method=DELETE"
+            >
+              <button
+                type="submit"
+                class="btn btn-sm btn-dark align-self-bottom"
+              >
+                DELETE
+              </button>
             </form>
             <% } %>
-            </div>
           </div>
         </div>
+      </div>
       <% } %>
     </div>
   </div>
-<% } %>
-</body>
+  <% } %>
+
+  <!-- map -->
+
+  <hr />
+  <div
+    class="d-flex flex-column justify-content-center align-items-center"
+  >
+    <h3><b> Find it..</b></h3>
+    <div id="map"></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col col-sm-6 offset-md-3">
+      <div id="menu">
+        <input
+          id="satellite-streets-v12"
+          type="radio"
+          name="rtoggle"
+          value="satellite"
+        />
+        <label for="satellite-streets-v12">satellite streets</label>
+        <input id="light-v11" type="radio" name="rtoggle" value="light" />
+        <label for="light-v11">light</label>
+        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+        <label for="dark-v11">dark</label>
+        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+        <label for="streets-v12">streets</label>
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+        <label for="outdoors-v12">outdoors</label>
+      </div>
+    </div>
+  </div>
+
+  <script src="/script/map.js"></script>
 </body>
