@@ -54,7 +54,6 @@ module.exports.renderEditPlaceFrom = async (req, res) => {
   }
   res.render("./places/edit.ejs", { place: place });
 };
-
 module.exports.updatePlace = async (req, res) => {
   try {
     const { id } = req.params;
@@ -84,10 +83,28 @@ module.exports.updatePlace = async (req, res) => {
       }
     }
 
+    // Update the location and geocode if location is provided
+    if (req.body.location && req.body.location !== place.location) {
+      try {
+        let response = await geocodingClient
+          .forwardGeocode({
+            query: req.body.location,
+            limit: 1,
+          })
+          .send();
+        
+        place.location = req.body.location;
+        place.geometry = response.body.features[0].geometry;
+      } catch (error) {
+        console.error("Geocoding error:", error);
+        req.flash("error", "Failed to update location");
+        return res.redirect("/places/" + id + "/edit");
+      }
+    }
+
     // Update other fields
     place.title = req.body.title || place.title;
     place.description = req.body.description || place.description;
-    place.location = req.body.location || place.location;
 
     // Save the updated place
     await place.save();
