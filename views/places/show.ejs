@@ -98,10 +98,11 @@
       </form>
     </div>  
   </div>
-  <hr />
 <% } %>
+<% if(place.reviews.length>0) {%>
+  <hr />
   <div class="mb-3">
-    <p><b>All reviews:</b></p>
+    <p><b>All comments:</b></p>
     <div class="row">
       <% for(let review of place.reviews) { %>
         <div class="card col-md-4 mb-3 offset-md-1">
@@ -127,5 +128,6 @@
       <% } %>
     </div>
   </div>
+<% } %>
 </body>
 </body>
