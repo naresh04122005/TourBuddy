@@ -3,8 +3,11 @@ const Joi = require("joi");
 const placeSchemaValidator = Joi.object({
   title: Joi.string().required(),
   description: Joi.string().required(),
-  image: Joi.string().required(),
   location: Joi.string().required(),
+  image: Joi.string(),
+  imageId: Joi.string(),
+  addedBy: Joi.string().optional(),  // This field is optional in the schema
+  reviews: Joi.array().items(Joi.string()).optional()  // This field is optional in the schema
 });
 
 const reviewSchemaValidator = Joi.object({

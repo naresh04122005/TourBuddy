@@ -9,6 +9,7 @@
           action="/places/add"
           novalidate
           class="needs-validation"
+          enctype="multipart/form-data"
         >
           <div>
             <label for="title" class="form-label">Title:</label>
@@ -38,7 +39,7 @@
           </div>
           <div>
             <label for="image" class="form-label">Upload Image:</label>
-            <input type="text" name="image" class="form-control" required />
+            <input type="file" name="image" class="form-control" required />
           </div>
           <div>
             <label for="location" class="form-label">Location:</label>

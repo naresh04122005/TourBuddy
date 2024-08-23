@@ -1,15 +1,23 @@
 const Place = require("../models/places.model");
 const Review = require("../models/reviews.model");
+const cloudinary = require("../config/cloudConfig");
 
 module.exports.addNewPlace = async (req, res) => {
-  const { title, description, location, image } = req.body;
+  const { title, description, location } = req.body;
+
+  const result = await cloudinary.uploader.upload(req.file.path);
+  // console.log(result);
+  const image = result.secure_url;
+  const imageId = result.public_id;
+  // console.log(image);
+  // console.log(imageId);
   const newPlace = new Place({
     title,
     description,
     location,
     image,
+    imageId,
   });
-
   newPlace.addedBy = req.user._id;
   await newPlace.save();
   req.flash("success", "Successfully created a new place");
@@ -38,15 +46,80 @@ module.exports.renderEditPlaceFrom = async (req, res) => {
 };
 
 module.exports.updatePlace = async (req, res) => {
-  const place = await Place.findByIdAndUpdate(req.params.id, req.body);
-  await place.save();
-  req.flash("success", "Successfully updated place");
-  res.redirect("/places/" + req.params.id);
+  try {
+    const { id } = req.params;
+    const place = await Place.findById(id);
+
+    if (!place) {
+      req.flash("error", "Place not found");
+      return res.redirect("/places");
+    }
+
+    // Check if a new image file is provided
+    if (req.file) {
+      try {
+        // Delete the old image from Cloudinary
+        if (place.imageId) {
+          await cloudinary.uploader.destroy(place.imageId);
+        }
+
+        // Upload the new image to Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path);
+        place.image = result.secure_url;
+        place.imageId = result.public_id;
+      } catch (error) {
+        console.error("Cloudinary error:", error);
+        req.flash("error", "Failed to update the image on Cloudinary");
+        return res.redirect("/places/" + id + "/edit");
+      }
+    }
+
+    // Update other fields
+    place.title = req.body.title || place.title;
+    place.description = req.body.description || place.description;
+    place.location = req.body.location || place.location;
+
+    // Save the updated place
+    await place.save();
+
+    req.flash("success", "Successfully updated place");
+    res.redirect("/places/" + id);
+  } catch (err) {
+    console.error("Update place error:", err);
+    req.flash("error", "Failed to update place");
+    res.redirect("/places/" + req.params.id + "/edit");
+  }
 };
 
+
+
 module.exports.deletePlace = async (req, res) => {
-  await Place.findByIdAndDelete(req.params.id);
-  await Review.deleteMany({ _id: { $in: place.reviews } });
-  req.flash("success", "Successfully deleted place");
-  res.redirect("/places");
+  try {
+    // Find and delete the place by ID
+    const place = await Place.findById(req.params.id);
+
+    if (!place) {
+      req.flash("error", "Cannot find that place");
+      return res.redirect("/places");
+    }
+
+    // Delete the associated image from Cloudinary
+    await cloudinary.uploader.destroy(place.imageId);
+
+    // Remove the place from the database
+    await Place.findByIdAndDelete(req.params.id);
+
+    // Delete associated reviews
+    await Review.deleteMany({ _id: { $in: place.reviews } });
+
+    req.flash("success", "Successfully deleted place");
+    res.redirect("/places");
+  } catch (error) {
+    console.error("Error deleting place:", error);
+    req.flash("error", "Failed to delete place. Please try again.");
+    res.redirect("/places");
+  }
 };
+
+
+
