@@ -1,6 +1,26 @@
 <% layout('./layouts/boilerplate') -%>
 <body>
-  <!-- <h1 style="text-align: center;">Let's Explore!!</h1> -->
+  <div class="row">
+    <div class="col-sm-6 offset-sm-4 fw-bold">
+      <div
+        class="startingText text-body-secondary"
+        style="
+          font-size: 5vh;
+          background: -webkit-linear-gradient(
+            rgb(188, 12, 241),
+            rgb(212, 4, 4)
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        "
+      >
+        Welcome
+      </div>
+      <div class="startingText mx-1" style="font-size: 5vh">
+        <span class="z-3">to <b>TourBuddy</b></span>
+      </div>
+    </div>
+  </div>
   <div>
     <% if(places.length>0){ %>
     <div class="all-listings">
@@ -27,7 +47,9 @@
       <% } %>
     </div>
     <% } else { %>
-    <h1 style="text-align: center; margin-top: 20vh;">Oops! No such place found!! <span>&#129402;</span></h1>
+    <h1 style="text-align: center; margin-top: 20vh">
+      Oops! No such place found!! <span>&#129402;</span>
+    </h1>
     <% } %>
   </div>
 </body>

@@ -2,6 +2,8 @@
 <script>
   const mapToken = "<%= process.env.MAP_TOKEN %>";
   const coordinates = <%- JSON.stringify(place.geometry.coordinates) %>;
+  const locationWeather = "<%= place.location %>";
+  const weatherApiKey="<%= process.env.WEATHER_API_KEY %>";
 </script>
 <body>
   <div class="row">
@@ -14,19 +16,54 @@
       />
     </div>
   </div>
+  <hr />
 
-  <div class="container d-flex justify-content-center">
-    <h6>Added by <%= place.addedBy.username %></h6>
-  </div>
-
-  <div class="container d-flex justify-content-center">
-    <h1><%= place.title %></h1>
-  </div>
-
-  <div class="individualListingContent">
-    <div class="container d-flex justify-content-center">
-      <h5><%= place.location %></h5>
+  <div class="row">
+    <!-- Place Details -->
+    <div
+      class="col-sm-5 offset-md-1 p-4 d-flex flex-column justify-content-between"
+      style="
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      "
+    >
+      <div>
+        <h3><b><%= place.title %></b></h3>
+        <hr />
+        <p><%= place.description %></p>
+        <p><b>~<%= place.addedBy.username %></b></p>
+      </div>
     </div>
+
+    <!-- weather   -->
+
+    <div class="col-sm-5">
+      <div class="weatherDetails show">
+        <div class="weather-info">
+          <h2 id="locationWeather"></h2>
+          <hr />
+          <p id="temperatureWeather">
+            <i class="fas fa-thermometer-half"></i> <span>Temp:</span>
+          </p>
+          <p id="descriptionWeather">
+            <i class="fas fa-cloud-sun"></i> <span>Description:</span>
+          </p>
+          <p id="windSpeedWeather">
+            <i class="fas fa-wind"></i> <span>Wind Speed:</span>
+          </p>
+          <p id="humidityWeather">
+            <i class="fas fa-tint"></i> <span>Humidity:</span>
+          </p>
+          <p id="pressureWeather">
+            <i class="fas fa-tachometer-alt"></i> <span>Pressure:</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- weather -->
   </div>
   <br />
 
@@ -36,13 +73,17 @@
       <button
         type="submit"
         class="btn btn-primary fw-bold"
-        style="background-color: #74C0FC; border: none"
+        style="background-color: #74c0fc; border: none"
       >
         UPDATE
       </button>
     </form>
 
-    <form method="POST" action="/places/<%= place._id %>?_method=DELETE" onsubmit="return confirmDelete()">
+    <form
+      method="POST"
+      action="/places/<%= place._id %>?_method=DELETE"
+      onsubmit="return confirmDelete()"
+    >
       <button
         type="submit"
         class="btn btn-primary fw-bold"
@@ -189,4 +230,5 @@
   </div>
 
   <script src="/script/map.js"></script>
+  <script src="/script/weather.js"></script>
 </body>
