@@ -2,14 +2,14 @@
 <body>
   <div class="row mt-2">
     <div class="col-sm-6 offset-md-3">
-      <h1>Login in TourBuddy</h1>
+      <h1>Login to TourBuddy</h1>
       <form
         action="/users/login"
         method="POST"
         novalidate
         class="needs-validation"
       >
-        <div>
+        <div class="mb-3">
           <label for="username" class="form-label">Username:</label>
           <input
             type="text"
@@ -20,20 +20,9 @@
           />
           <div class="invalid-feedback">Please enter a valid username.</div>
         </div>
-        <!-- <div>
-          <label for="email" class="form-label">Email:</label>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            class="form-control"
-            required
-          />
-          <div class="invalid-feedback">Please enter a valid email.</div>
-        </div> -->
 
-        <div>
-          <label for="password" class="form-label">password:</label>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password:</label>
           <input
             type="password"
             name="password"
@@ -43,14 +32,21 @@
           />
           <div class="invalid-feedback">Please enter a valid password.</div>
         </div>
-        <br />
-        <div style="display: flex; justify-content: center">
-          <button type="submit" class="btn btn-success fw-bold"   style="background-color: #183153; border: none;">
-            LogIn
+        
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-success fw-bold" style="background-color: #183153; border: none;">
+            Log In
           </button>
         </div>
       </form>
-      <br>
+      <br />
+      <div class="text-center">
+        <p>Or log in with Google:</p>
+        <a href="/auth/google" class="btn btn-danger">
+          <i class="fab fa-google"></i> Log in with Google
+        </a>
+      </div>
+      <br />
       <p>Don't have an account? <a href="/users/register">Register here</a></p>
     </div>
   </div>
