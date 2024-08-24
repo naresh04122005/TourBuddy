@@ -15,7 +15,7 @@ module.exports.addNewPlace = async (req, res) => {
     })
     .send();
 
-    // console.log(response.body.features[0].geometry);
+  // console.log(response.body.features[0].geometry);
 
   const result = await cloudinary.uploader.upload(req.file.path);
   const image = result.secure_url;
@@ -92,7 +92,7 @@ module.exports.updatePlace = async (req, res) => {
             limit: 1,
           })
           .send();
-        
+
         place.location = req.body.location;
         place.geometry = response.body.features[0].geometry;
       } catch (error) {
@@ -116,6 +116,17 @@ module.exports.updatePlace = async (req, res) => {
     req.flash("error", "Failed to update place");
     res.redirect("/places/" + req.params.id + "/edit");
   }
+};
+
+module.exports.searchPlace = async (req, res) => {
+  let { query } = req.query;
+  let places = await Place.find({
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { location: { $regex: query, $options: "i" } },
+    ],
+  });
+  res.render("./places/home.ejs", { places: places });
 };
 
 module.exports.deletePlace = async (req, res) => {

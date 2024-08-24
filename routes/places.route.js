@@ -6,8 +6,8 @@ const { validatePlace } = require("../utils/validatePlace");
 const isLoggedIn = require("../utils/isLoggedIn");
 const isOwner = require("../utils/isOwner");
 const placesController = require("../controller/places.controller");
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 router.get(
   "/",
@@ -24,9 +24,14 @@ router.get("/add", isLoggedIn, (req, res) => {
 router.post(
   "/add",
   isLoggedIn,
-  upload.single('image'),
+  upload.single("image"),
   validatePlace,
   wrapAsync(placesController.addNewPlace)
+);
+
+router.get(
+  "/search",
+  wrapAsync(placesController.searchPlace)
 );
 
 router.get("/:id", wrapAsync(placesController.getPlaceById));
@@ -41,8 +46,8 @@ router.patch(
   "/:id",
   isLoggedIn,
   isOwner,
-  upload.single('image'),
-  validatePlace,  // Use multer to handle file uploads
+  upload.single("image"),
+  validatePlace, // Use multer to handle file uploads
   wrapAsync(placesController.updatePlace)
 );
 

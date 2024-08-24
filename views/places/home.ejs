@@ -1,24 +1,33 @@
 <% layout('./layouts/boilerplate') -%>
 <body>
-  <h1 style="text-align: center;">Let's Explore!!</h1>
+  <!-- <h1 style="text-align: center;">Let's Explore!!</h1> -->
   <div>
+    <% if(places.length>0){ %>
     <div class="all-listings">
       <% for(let place of places) { %>
       <a href="/places/<%= place._id %>">
-      <div class="card listing-card" style="width: 18rem">
-        <img src="<%= place.image %>" class="card-img-top" alt="..." height="300px" width="200px" />
-        <div class="card-img-overlay"></div>
-        <div class="card-body">
-          <p class="card-text">
-            ~<%= place.title %>
-            <br>  
-           <%= place.location %>
-
-          </p>
+        <div class="card listing-card" style="width: 18rem">
+          <img
+            src="<%= place.image %>"
+            class="card-img-top"
+            alt="..."
+            height="300px"
+            width="200px"
+          />
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <p class="card-text">
+              ~<%= place.title %>
+              <br />
+              <%= place.location %>
+            </p>
+          </div>
         </div>
-      </div>
       </a>
       <% } %>
     </div>
+    <% } else { %>
+    <h1 style="text-align: center; margin-top: 20vh;">Oops! No such place found!! <span>&#129402;</span></h1>
+    <% } %>
   </div>
 </body>
