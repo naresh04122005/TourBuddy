@@ -46,7 +46,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Express Session Options
 const options = {
-  secret: "highlyprotectedsecret",
+  secret: process.env.SESSION_SECRET || "djsjfdshfdkfdfdgjbdvdhvdbds",
   resave: false,
   saveUninitialized: true,
   cookie: {

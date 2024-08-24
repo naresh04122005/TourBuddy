@@ -33,7 +33,7 @@
         <h3><b><%= place.title %></b></h3>
         <hr />
         <p><%= place.description %></p>
-        <p><b>~<%= place.addedBy.username %></b></p>
+        <p><b>Added by:<%= place.addedBy.username %></b></p>
       </div>
     </div>
 
@@ -101,7 +101,7 @@
 
   <div class="row d-flex justify-content-center">
     <div class="col-md-7">
-      <h3>Leave a comment:</h3>
+      <h3>Your view on <%= place.title %> </h3>
       <form
         method="POST"
         action="/places/<%= place._id %>/reviews/add"
@@ -109,7 +109,7 @@
         class="needs-validation"
       >
         <div class="mb-1">
-          <label for="rating" class="form-label">Rate us:</label>
+          <label for="rating" class="form-label">Rate <%= place.title %>:</label>
           <!-- <input type="range" class="form-range" min="1" max="5" id="rating" name="rating"> -->
 
           <fieldset class="starability-heartbeat">
@@ -137,16 +137,16 @@
         </div>
 
         <div class="mb-3">
-          <label for="review" class="form-label">Comment:</label>
+          <label for="review" class="form-label">Review:</label>
           <textarea
             class="form-control"
             id="review"
             name="review"
             rows="3"
-            placeholder="Leave a comment.."
+            placeholder="Please leave a review.."
             required
           ></textarea>
-          <div class="invalid-feedback">Please leave a comment..</div>
+          <div class="invalid-feedback">Please leave a review..</div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
           <button type="submit" class="btn btn-outline-secondary">
@@ -203,7 +203,7 @@
 
   <hr />
   <div class="d-flex flex-column justify-content-center align-items-center">
-    <h3><b> Find it..</b></h3>
+    <h3><b> Find <%= place.title %> here..</b></h3>
     <div id="map"></div>
   </div>
 
