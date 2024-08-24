@@ -1,7 +1,12 @@
+*{
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family: 'Lato' !important;
 }
 
 .container {
@@ -17,7 +22,7 @@ body {
 
 .navbar-brand i {
   font-size: 2rem;
-  color: #fe424d;
+  color: #74C0FC;
   rotate: -30deg;
 }
 
@@ -26,30 +31,101 @@ body {
   font-weight: 500 !important;
 }
 
+.search-box{
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+}
+.input-search{
+  height: 50px;
+  width: 50px;
+  border-style: none;
+  padding: 10px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  outline: none;
+  border-radius: 25px;
+  transition: all .5s ease-in-out;
+  /* background-color: #74C0FC; */
+  padding-right: 40px;
+  color:black;
+  margin-right: 20px;
+}
+.input-search::placeholder{
+  color:rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-weight: 100;
+}
+.btn-search{
+  width: 50px;
+  height: 50px;
+  border-style: none;
+  font-size: 20px;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  right: 0px;
+  color:black ;
+  background-color:transparent;
+  pointer-events: painted;  
+}
+.btn-search:focus ~ .input-search{
+  width: 300px;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom:1px solid rgba(0, 0, 0, 0.5);
+  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+.input-search:focus{
+  width: 300px;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom:1px solid rgba(32, 26, 26, 0.5);
+  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.input-search {
+  pointer-events: none;
+}
+
+.input-search.open {
+  pointer-events: auto;
+}
+
+.search-box {
+  position: relative;
+  width: fit-content;
+}
+
+
+
 /* Footer  */
 
 footer {
-  background-color: #d1caca;
-  color: black;
+  background-color: #183153;
+  color: white;
   padding: 0.3rem 0;
   text-align: center;
 }
 
 .f-info-links a {
-  color: black;
+  color: white;
   font-size: 0.9rem;
   margin: 0rem;
   text-decoration: none;
 }
 
 .f-info-links a:hover {
-  color: #fe424d;
+  color: #74C0FC;
   text-decoration: underline;
 }
 
 .f-info-socials i {
   font-size: 1.3rem;
-  color: #222222;
+  color: white;
   margin: 0.5rem;
 }
 
@@ -169,7 +245,7 @@ footer {
 }
 
 #menu label{
-    color: #a18788;
-    font-size: 1.5rem;
-    font-weight: 500;
+    color: #555555c3;
+   
 }
+

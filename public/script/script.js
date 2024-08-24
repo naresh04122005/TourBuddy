@@ -20,3 +20,34 @@
     );
   });
 })();
+
+
+document.getElementById('searchButton').addEventListener('click', function() {
+  const searchInput = document.getElementById('searchInput');
+  const searchForm = document.getElementById('searchForm');
+  const query = searchInput.value.trim();
+
+  if (searchInput.classList.contains('open')) {
+    if (query === '') {
+      // add bootstrap v alidation
+      searchInput.classList.remove('open');
+      return;
+    }
+    // Submit the form if input is open
+    searchForm.submit();
+  } else {
+    // Add 'open' class to input to trigger the CSS transition
+    searchInput.classList.add('open');
+    searchInput.focus(); // Optional: Focus on input field
+  }
+});
+
+
+function confirmLogout() {
+  return confirm("Are you sure you want to log out?");
+}
+
+
+function confirmDelete() {
+  return confirm("Are you sure you want to delete this place?");
+}
