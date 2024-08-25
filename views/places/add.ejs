@@ -1,7 +1,7 @@
 <% layout('./layouts/boilerplate') -%>
 <body>
   <div style="margin: 2px">
-    <h1 style="text-align: center">Add a new place</h1>
+    <h1 style="text-align: center">Add a New Place</h1>
     <div class="row d-flex justify-content-center">
       <div class="col-lg-6">
         <form
@@ -11,9 +11,8 @@
           class="needs-validation"
           enctype="multipart/form-data"
         >
-          <div>
+          <div class="mb-3">
             <label for="title" class="form-label">Title:</label>
-            <br />
             <input
               type="text"
               name="title"
@@ -24,7 +23,7 @@
             />
             <div class="invalid-feedback">Please enter a valid title.</div>
           </div>
-          <div>
+          <div class="mb-3">
             <label for="description" class="form-label">Description:</label>
             <textarea
               name="description"
@@ -37,11 +36,19 @@
               Please write a short description.
             </div>
           </div>
-          <div>
-            <label for="image" class="form-label">Upload Image:</label>
-            <input type="file" name="image" class="form-control" required />
+          <div class="mb-3">
+            <label for="newImages" class="form-label">Upload Image(s):</label>
+            <input
+              type="file"
+              name="newImages"
+              id="newImages"
+              class="form-control"
+              multiple
+              required
+            />
+            <div class="invalid-feedback">Please upload at least one image.</div>
           </div>
-          <div>
+          <div class="mb-3">
             <label for="location" class="form-label">Location:</label>
             <input
               type="text"
@@ -53,8 +60,7 @@
             />
             <div class="invalid-feedback">Please choose a location.</div>
           </div>
-          <br />
-          <div style="display: flex; justify-content: center">
+          <div class="d-flex justify-content-center">
             <button
               type="submit"
               class="btn btn-primary fw-bold"
@@ -63,9 +69,8 @@
               List Place
             </button>
           </div>
-          <br />
-          <br />
         </form>
+        <br>  
       </div>
     </div>
   </div>

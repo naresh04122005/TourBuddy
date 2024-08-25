@@ -17,8 +17,7 @@ router.get(
       req.flash("error", "No places found");
       return res.redirect("/places");
     }
-
-    res.render("./places/home.ejs", { places: places });
+    res.render("./places/home.ejs", { places });
   })
 );
 
@@ -29,9 +28,16 @@ router.get("/add", isLoggedIn, (req, res) => {
 router.post(
   "/add",
   isLoggedIn,
-  upload.single("image"),
+  upload.array("newImages"), // Allow multiple images
   validatePlace,
-  wrapAsync(placesController.addNewPlace)
+  wrapAsync(async (req, res, next) => {
+    const files = req.files;
+    req.body.images = files.map(file => ({
+      url: file.path, // Adjust according to how you handle file URLs
+      imageId: file.filename // Adjust according to how you handle file IDs
+    }));
+    await placesController.addNewPlace(req, res, next);
+  })
 );
 
 router.get("/search", wrapAsync(placesController.searchPlace));
@@ -48,9 +54,16 @@ router.patch(
   "/:id",
   isLoggedIn,
   isOwner,
-  upload.single("image"),
-  validatePlace, // Use multer to handle file uploads
-  wrapAsync(placesController.updatePlace)
+  upload.array("newImages"), // Handle multiple new images
+  validatePlace,
+  wrapAsync(async (req, res, next) => {
+    const files = req.files;
+    req.body.images = files.map(file => ({
+      url: file.path, // Adjust according to how you handle file URLs
+      imageId: file.filename // Adjust according to how you handle file IDs
+    }));
+    await placesController.updatePlace(req, res, next);
+  })
 );
 
 router.delete(

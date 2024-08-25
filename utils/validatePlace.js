@@ -1,10 +1,15 @@
 const { placeSchemaValidator } = require("../schemaValidator/schemaValidator");
 
 const validatePlace = (req, res, next) => {
-  const { error } = placeSchemaValidator.validate(req.body);
+  const { error } = placeSchemaValidator.validate(req.body, { abortEarly: false }); // Added abortEarly: false to capture all errors
+  
   if (error) {
-    throw new Error(error.details[0].message, 400);
+    return res.status(400).json({
+      status: 'error',
+      message: error.details.map(detail => detail.message).join(', ')
+    });
   }
+  
   next();
 };
 

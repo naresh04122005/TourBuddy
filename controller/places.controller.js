@@ -8,6 +8,7 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 module.exports.addNewPlace = async (req, res) => {
   const { title, description, location } = req.body;
 
+  // Geocoding the location
   let response = await geocodingClient
     .forwardGeocode({
       query: location,
@@ -15,20 +16,22 @@ module.exports.addNewPlace = async (req, res) => {
     })
     .send();
 
-  // console.log(response.body.features[0].geometry);
-
-  const result = await cloudinary.uploader.upload(req.file.path);
-  const image = result.secure_url;
-  const imageId = result.public_id;
   const newPlace = new Place({
     title,
     description,
     location,
-    image,
-    imageId,
     geometry: response.body.features[0].geometry,
+    addedBy: req.user._id,
   });
-  newPlace.addedBy = req.user._id;
+
+  // Handle single or multiple image uploads
+  if (req.files && req.files.length > 0) {
+    for (const file of req.files) {
+      const result = await cloudinary.uploader.upload(file.path);
+      newPlace.images.push({ url: result.secure_url, imageId: result.public_id });
+    }
+  }
+
   await newPlace.save();
   req.flash("success", "Successfully created a new place");
   res.redirect("/places");
@@ -38,25 +41,23 @@ module.exports.getPlaceById = async (req, res) => {
   let place = await Place.findById(req.params.id)
     .populate({ path: "reviews", populate: { path: "createdBy" } })
     .populate("addedBy");
-  // console.log(place);
+
   if (!place) {
     req.flash("error", "Cannot find that place");
     return res.redirect("/places");
   }
 
-  place.reviews.sort((a, b) => {
-    return b.createdAt - a.createdAt;
-  });
+  place.reviews.sort((a, b) => b.createdAt - a.createdAt);
 
-  // Transform the single image URL
-  const transformedImageUrl = cloudinary.url(place.imageId, {
-    transformation: [
-      { width: 1000, height: 600, crop: "fill" } // Adjust these dimensions as needed
-    ]
-  });
+  // Transform all image URLs
+  const transformedImageUrls = place.images.map(image =>
+    cloudinary.url(image.imageId, { transformation: [{ width: 1000, height: 600, crop: "fill" }] })
+  );
 
-  res.render("./places/show.ejs", { place: place, transformedImageUrl });
+  res.render("./places/show.ejs", { place, transformedImageUrls });
 };
+
+
 
 module.exports.renderEditPlaceFrom = async (req, res) => {
   let place = await Place.findById(req.params.id);
@@ -66,6 +67,7 @@ module.exports.renderEditPlaceFrom = async (req, res) => {
   }
   res.render("./places/edit.ejs", { place: place });
 };
+
 module.exports.updatePlace = async (req, res) => {
   try {
     const { id } = req.params;
@@ -76,22 +78,21 @@ module.exports.updatePlace = async (req, res) => {
       return res.redirect("/places");
     }
 
-    // Check if a new image file is provided
-    if (req.file) {
-      try {
-        // Delete the old image from Cloudinary
-        if (place.imageId) {
-          await cloudinary.uploader.destroy(place.imageId);
-        }
+    // Handle the deletion of selected images
+    if (req.body.removeImages && req.body.removeImages.length > 0) {
+      for (const imageId of req.body.removeImages) {
+        // Delete image from Cloudinary
+        await cloudinary.uploader.destroy(imageId);
+        // Remove image from the place's images array
+        place.images = place.images.filter(img => img.imageId !== imageId);
+      }
+    }
 
-        // Upload the new image to Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path);
-        place.image = result.secure_url;
-        place.imageId = result.public_id;
-      } catch (error) {
-        console.error("Cloudinary error:", error);
-        req.flash("error", "Failed to update the image on Cloudinary");
-        return res.redirect("/places/" + id + "/edit");
+    // Handle the addition of new images
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const result = await cloudinary.uploader.upload(file.path);
+        place.images.push({ url: result.secure_url, imageId: result.public_id });
       }
     }
 
@@ -151,8 +152,10 @@ module.exports.deletePlace = async (req, res) => {
       return res.redirect("/places");
     }
 
-    // Delete the associated image from Cloudinary
-    await cloudinary.uploader.destroy(place.imageId);
+    // Delete all associated images from Cloudinary
+    for (const image of place.images) {
+      await cloudinary.uploader.destroy(image.imageId);
+    }
 
     // Remove the place from the database
     await Place.findByIdAndDelete(req.params.id);
