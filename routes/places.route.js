@@ -13,6 +13,11 @@ router.get(
   "/",
   wrapAsync(async (req, res) => {
     let places = await Place.find();
+    if (!places) {
+      req.flash("error", "No places found");
+      return res.redirect("/places");
+    }
+
     res.render("./places/home.ejs", { places: places });
   })
 );
@@ -29,10 +34,7 @@ router.post(
   wrapAsync(placesController.addNewPlace)
 );
 
-router.get(
-  "/search",
-  wrapAsync(placesController.searchPlace)
-);
+router.get("/search", wrapAsync(placesController.searchPlace));
 
 router.get("/:id", wrapAsync(placesController.getPlaceById));
 

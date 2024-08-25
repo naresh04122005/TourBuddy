@@ -185,6 +185,31 @@ footer {
   margin: 1rem auto;
 }
 
+.carousel-inner img {
+  object-fit: cover;
+  height: 60vh;
+  border-radius: 20px;
+}
+
+.carousel {
+  max-height: 60vh;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: To darken the control icons */
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
 /* All Listings  */
 
 .all-listings {

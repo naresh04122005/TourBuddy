@@ -18,6 +18,7 @@ const methodOverride = require("method-override");
 const placesRoute = require("./routes/places.route");
 const User = require("./models/user.model");
 const flash = require("connect-flash");
+const saveRedirectUrl = require("./utils/redirectUrl");
 
 // Connect To Database
 main()
@@ -80,34 +81,38 @@ passport.deserializeUser(async (id, done) => {
 
 // Google OAuth Strategy
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback"
-},
-async (accessToken, refreshToken, profile, done) => {
-  try {
-    // Check if user already exists
-    let user = await User.findOne({ googleId: profile.id });
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Check if user already exists
+        let user = await User.findOne({ googleId: profile.id });
 
-    if (!user) {
-      // If user does not exist, create a new user
-      const username = profile.displayName || null; // Use displayName as username if available
+        if (!user) {
+          // If user does not exist, create a new user
+          const username = profile.displayName || null; // Use displayName as username if available
 
-      user = new User({
-        googleId: profile.id,
-        email: profile.emails[0].value,
-        username: username // Optionally set username if available
-      });
+          user = new User({
+            googleId: profile.id,
+            email: profile.emails[0].value,
+            username: username, // Optionally set username if available
+          });
 
-      await user.save();
+          await user.save();
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
     }
-
-    return done(null, user);
-  } catch (err) {
-    return done(err, null);
-  }
-}));
+  )
+);
 
 // Middleware to make flash messages available to views
 app.use((req, res, next) => {
@@ -118,19 +123,22 @@ app.use((req, res, next) => {
 });
 
 // Routes for Google Auth
-app.get("/auth/google",
+app.get(
+  "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+app.get(
+  "/auth/google/callback",
+  saveRedirectUrl,
+  passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     // Successful authentication
-    req.flash('success', 'Welcome back to TourBuddy!');
-    res.redirect('/places');
+    req.flash("success", "Welcome back to TourBuddy!");
+    const redirectUrl = res.locals.redirectUrl || "/places";
+    res.redirect(redirectUrl);
   }
 );
-
 
 // routes
 app.get("/", (req, res) => {

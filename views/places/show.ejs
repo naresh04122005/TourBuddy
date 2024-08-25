@@ -7,16 +7,30 @@
 </script>
 <body>
   <div class="row">
-    <div class="mt-2 d-flex justify-content-center">
-      <img
-        src="<%= place.image %>"
-        class="img-fluid rounded mx-auto"
-        width="300vh"
-        alt="Listing_Image"
-      />
+    <div id="imageCarousel" class="carousel slide mt-2" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active d-flex justify-content-center">
+                <img src="<%= transformedImageUrl %>" class="d-block w-50" alt="Listing Image">
+            </div>
+            <!-- You can add more items here -->
+            <!--
+            <div class="carousel-item">
+                <img src="another_image_url" class="d-block w-100" alt="Another Listing Image">
+            </div>
+            -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-  </div>
-  <hr />
+</div>
+<hr />
+
 
   <div class="row">
     <!-- Place Details -->
@@ -33,6 +47,7 @@
         <h3><b><%= place.title %></b></h3>
         <hr />
         <p><%= place.description %></p>
+        <p>Read <a href="https://en.wikipedia.org/wiki/<%= place.title %>">more</a></p>
         <p><b>Added by:<%= place.addedBy.username %></b></p>
       </div>
     </div>

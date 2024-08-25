@@ -43,7 +43,19 @@ module.exports.getPlaceById = async (req, res) => {
     req.flash("error", "Cannot find that place");
     return res.redirect("/places");
   }
-  res.render("./places/show.ejs", { place: place });
+
+  place.reviews.sort((a, b) => {
+    return b.createdAt - a.createdAt;
+  });
+
+  // Transform the single image URL
+  const transformedImageUrl = cloudinary.url(place.imageId, {
+    transformation: [
+      { width: 1000, height: 600, crop: "fill" } // Adjust these dimensions as needed
+    ]
+  });
+
+  res.render("./places/show.ejs", { place: place, transformedImageUrl });
 };
 
 module.exports.renderEditPlaceFrom = async (req, res) => {
