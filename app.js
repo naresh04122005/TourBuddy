@@ -101,6 +101,7 @@ passport.use(
             googleId: profile.id,
             email: profile.emails[0].value,
             username: username, // Optionally set username if available
+            isVerified: true, // Google OAuth users are verified by default
           });
 
           await user.save();
@@ -134,7 +135,7 @@ app.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     // Successful authentication
-    req.flash("success", "Welcome back to TourBuddy!");
+    req.flash("success", "Welcome to TourBuddy!");
     const redirectUrl = res.locals.redirectUrl || "/places";
     res.redirect(redirectUrl);
   }

@@ -16,9 +16,18 @@ const userSchema = new Schema({
   googleId: {
     type: String,
     unique: true
+  },
+  isVerified: {
+    type: Boolean,
+    default: false // Indicates if the user's email is verified
+  },
+  verificationToken: {
+    type: String,
+    required: false // Stores the email verification token
   }
 });
 
+// Plugin to handle password hashing and salting
 userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", userSchema);
