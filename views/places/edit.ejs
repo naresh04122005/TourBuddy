@@ -11,6 +11,7 @@
         class="needs-validation"
         enctype="multipart/form-data"
       >
+        <!-- Title -->
         <div>
           <label for="title" class="form-label">Title:</label>
           <input
@@ -23,6 +24,8 @@
           />
           <div class="invalid-feedback">Please enter a valid title.</div>
         </div>
+
+        <!-- Description -->
         <div>
           <label for="description" class="form-label">Description:</label>
           <textarea
@@ -36,16 +39,50 @@
           >
           <div class="invalid-feedback">Please write a short description.</div>
         </div>
+
+        <!-- Existing Images -->
         <div>
-          <label for="image" class="form-label">Upload New Image:</label>
+          <label for="existingImages" class="form-label"
+            >Existing Images:</label
+          >
+          <div class="thumbnail-container">
+            <% place.images.forEach((image, index) => { %>
+            <div class="col-md-3">
+              <img src="<%= image.url %>" alt="Place Image" />
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  name="removeImages[]"
+                  value="<%= image.imageId %>"
+                  id="removeImage<%= index %>"
+                />
+                <label class="form-check-label" for="removeImage<%= index %>">
+                  Remove
+                </label>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <div class="form-text">Check the images you want to remove.</div>
+        </div>
+
+        <!-- Upload New Images -->
+        <div>
+          <label for="newImages" class="form-label">Upload New Images:</label>
           <input
             type="file"
-            name="image"
-            id="image"
+            name="newImages"
+            id="newImages"
             class="form-control"
-            value="<%= place.image %>"
+            multiple
           />
+          <div class="form-text">
+            Upload new images to add to the existing ones.
+          </div>
         </div>
+
+        <!-- Location -->
         <div>
           <label for="location" class="form-label">Location:</label>
           <input
@@ -60,11 +97,12 @@
         </div>
 
         <br />
+        <!-- Submit Button -->
         <div style="display: flex; justify-content: center">
           <button
             type="submit"
             class="btn btn-primary fw-bold"
-            style="background-color: #74C0FC; border: none"
+            style="background-color: #74c0fc; border: none"
           >
             Update Details
           </button>

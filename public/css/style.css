@@ -9,6 +9,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: "Lato" !important;
+  overflow-x: hidden;
 }
 
 .container {
@@ -177,37 +178,36 @@ footer {
 
 /* Show Page  */
 
-.show-image {
-  height: 60vh;
-  object-fit: cover;
-  border-radius: 10px;
-  width: 80%;
-  margin: 1rem auto;
-}
 
+/* Ensures the image fills the carousel item while maintaining aspect ratio */
 .carousel-inner img {
   object-fit: cover;
-  height: 60vh;
+  height: 60vh; /* Adjust based on your design needs */
   border-radius: 20px;
+  width: 100%; /* Ensures image spans full width of carousel item */
 }
 
+/* Restricts carousel height to ensure it fits well within viewport */
 .carousel {
-  max-height: 60vh;
+  max-height: 60vh; /* Consistent with image height for layout */
 }
 
+/* Styles for carousel control icons */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  background-color: rgba(0, 0, 0, 0.5); /* Optional: To darken the control icons */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for visibility */
   border-radius: 50%;
   padding: 10px;
 }
 
+/* Styles for carousel indicators */
 .carousel-indicators {
   position: absolute;
-  top: 90%;
+  bottom: 10px; /* Moves indicators to bottom of carousel */
   left: 50%;
   transform: translateX(-50%);
 }
+
 
 
 /* All Listings  */
@@ -245,6 +245,32 @@ footer {
   background-color: rgba(0, 0, 0, 0.5);
   transition: 0.5s;
 }
+
+/* edit page  */
+
+/* Ensures all thumbnails have the same height and width */
+.thumbnail-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Optional: space between thumbnails */
+}
+
+.thumbnail-container img {
+  width: 100%;
+  height: 150px; /* Set a fixed height */
+  object-fit: cover; /* Ensures images fit within the box without distortion */
+  border-radius: 0.25rem; /* Bootstrap's border radius for consistent styling */
+}
+
+/* Optional: Adjust form-check styling to align with Bootstrap */
+.form-check {
+  margin-top: 5px; /* Space between image and checkbox */
+}
+
+.form-check-input {
+  margin-top: 3px; /* Adjust checkbox positioning */
+}
+
 
 /* map  */
 

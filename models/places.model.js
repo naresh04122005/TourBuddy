@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const cloudinary = require("../config/cloudConfig");
 
+const ImageSchema = new Schema({
+  url: String,
+  imageId: String
+});
+
 const placeSchema = new Schema(
   {
     title: {
@@ -16,14 +21,7 @@ const placeSchema = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-      required: true,
-    },
-    imageId: {
-      type: String,
-      required: true,
-    },
+    images: [ImageSchema],  // Array of images
     addedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
