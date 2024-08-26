@@ -677,6 +677,12 @@ footer {
   margin-bottom: 15px;
 }
 
+.add-review-button{
+  &:hover{
+    background-color: #74c0fc;
+    color: #f7f7f7;
+  }
+}
 
 
 /* map  */
