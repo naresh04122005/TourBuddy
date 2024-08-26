@@ -835,6 +835,7 @@ footer {
   }
 }
 
+
 /* glas-text */
 .glas-cont {
   display: flex;
@@ -916,4 +917,14 @@ footer {
   }
 }
 
+/* Ai  */
+
+.ask-ai i{
+  font-size: 2rem;
+  color: #74c0fc;
+
+  &:hover{
+    color: #007bff;
+  }
+}
 

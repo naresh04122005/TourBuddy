@@ -10,16 +10,18 @@ router.get("/register", (req, res) => {
 
 router.post("/register", usersController.registerUser);
 
+// Email Verification
+router.get("/verify-email", usersController.verifyEmail);
+
 // Login
 router.get("/login", (req, res) => {
   res.render("users/login");
 });
 
-//login route with success and failure flash messages and redirect
+// Login route with success and failure flash messages and redirect
 router.post("/login", saveRedirectUrl, usersController.loginUser);
 
 // Logout
-
 router.get("/logout", usersController.logoutUser);
 
 module.exports = router;

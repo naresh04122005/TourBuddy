@@ -19,6 +19,12 @@ const placesRoute = require("./routes/places.route");
 const User = require("./models/user.model");
 const flash = require("connect-flash");
 const saveRedirectUrl = require("./utils/redirectUrl");
+const http = require("http");
+const server = http.createServer(app);
+
+
+// Socket.IO connection handling
+require("./socket/socket")(server);
 
 // Connect To Database
 main()
@@ -101,6 +107,7 @@ passport.use(
             googleId: profile.id,
             email: profile.emails[0].value,
             username: username, // Optionally set username if available
+            isVerified: true, // Google OAuth users are verified by default
           });
 
           await user.save();
@@ -134,7 +141,7 @@ app.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     // Successful authentication
-    req.flash("success", "Welcome back to TourBuddy!");
+    req.flash("success", "Welcome to TourBuddy!");
     const redirectUrl = res.locals.redirectUrl || "/places";
     res.redirect(redirectUrl);
   }
@@ -145,8 +152,14 @@ app.get("/", (req, res) => {
   res.send("Hello Boyyy");
 });
 
+// Chat route
+app.use("/community", require("./routes/community.route"));
+
 // places routes
 app.use("/places", placesRoute);
+
+//ai route
+app.use("/ai", require("./routes/ai.route"));
 
 // user routes
 app.use("/users", require("./routes/users.route"));
@@ -167,6 +180,6 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log("Server started on port " + port);
 });
