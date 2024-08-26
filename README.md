@@ -33,7 +33,7 @@ Contributers:-
 
 ## Features
 
-- User Authentication
+- User Authentication with email
 - OAuth
 - Real Time Discussion community
 - Mutiple Image uploads
