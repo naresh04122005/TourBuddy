@@ -70,7 +70,7 @@ store.on("error", function (e) {
 // Express Session Options
 const options = {
   store,
-  secret: process.env.SESSION_SECRET || "djsjfdshfdkfdfdgjbdvdhvdbds",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -166,7 +166,7 @@ app.get(
 
 // routes
 app.get("/", (req, res) => {
-  res.send("Hello Boyyy");
+  res.redirect("/places");
 });
 
 // Chat route
