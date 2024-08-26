@@ -20,8 +20,20 @@ body {
 .navbar {
   height: 4rem;
   z-index: 999;
-  background-color: white;
+  background: rgba(255, 255, 255, 0.23);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  position: fixed; /* Change to fixed */
+  top: 0; /* Stick to the top */
+  left: 0; /* Align to the left */
+  right: 0; /* Align to the right */
+  margin-bottom: 30px; /* Optional: adjust as needed */
+  width: 100%; /* Ensure the navbar spans the full width */
 }
+
 
 .navbar-brand i {
   font-size: 2rem;
@@ -30,8 +42,45 @@ body {
 }
 
 .nav-link {
-  color: #222222 !important;
+  color: #222222 ;
   font-weight: 500 !important;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+.nav-link:hover {
+  background-color: #62a0e3;
+  color: #fff;  
+}
+
+/* hero home two btns */
+
+.nav-link2 {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  text-decoration: none;
+  margin-right: 5px;
+  color: #000;
+}
+
+.nav-link2:hover {
+  background-color: #62a0e3;
+  color: #fff;  
+}
+
+#explore-btn{
+  border: 1px solid black;
 }
 
 .search-box {
@@ -74,6 +123,7 @@ body {
   color: black;
   background-color: transparent;
   pointer-events: painted;
+  transform: translateX(-40%);
 }
 .btn-search:focus ~ .input-search {
   width: 300px;
@@ -140,6 +190,132 @@ footer {
   font-weight: 500;
 }
 
+/* hero section css */
+.hero-home {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  position: relative;
+  background: rgba(255, 255, 255, 0.23);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+  margin-top: 30px;
+  background-image: url('../assets/blur_snow_mountain.webp');
+  background-size: cover;
+  background-position: center;
+  animation: revealImg 6s;
+}
+
+.hero-img {
+  width: 50%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(20px);
+  background-image: url('../assets/snow_mountain.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  margin-right: 2rem;
+  animation: slideInRight 2s ease-out forwards; /* Apply animation */
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #000;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px 16px 16px 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: slideInLeft 2s ease-out forwards; /* Apply animation */
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes revealImg {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+
+/* for second hero-home img */
+
+.hero-home2 {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  position: relative;
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+  margin-top: 30px;
+
+}
+
+.hero-img2 {
+  width: 60%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(20px);
+  background-image: url('../assets/people-collaborating-online.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  margin-left: 2rem;
+}
+
+.hero-content2 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px 16px 16px 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+
+
+
+
+
+
+
 /* All Listings  */
 
 .all-listings {
@@ -180,6 +356,44 @@ footer {
 
 
 /* Ensures the image fills the carousel item while maintaining aspect ratio */
+/* Image carousel styles */
+/* Glassmorphism background container */
+/* Glassmorphism background container */
+/* Image carousel styles */
+/* Big Background Box with Glassmorphism Effect */
+.background-box {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  margin-top: 80px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* update and delete buttons glass effect */
+
+#glass-container-update{
+  padding: 20px;
+  margin: 10px;
+}
+
+/* Details Box Styling */
+.details-box, .weather-box {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Adjust margins for better spacing */
+.details-box {
+  margin-bottom: 20px;
+}
+
+/* Carousel Image Styling */
 .carousel-inner img {
   object-fit: cover;
   height: 60vh; /* Adjust based on your design needs */
@@ -187,7 +401,7 @@ footer {
   width: 100%; /* Ensures image spans full width of carousel item */
 }
 
-/* Restricts carousel height to ensure it fits well within viewport */
+/* Restricts carousel height to ensure it fits well within the viewport */
 .carousel {
   max-height: 60vh; /* Consistent with image height for layout */
 }
@@ -207,6 +421,37 @@ footer {
   left: 50%;
   transform: translateX(-50%);
 }
+
+
+/* Update button color change and size increase on hover */
+.update-button {
+  color: #000;
+  border: 1px solid black ;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.update-button:hover {
+  color: #fff;
+  border: none;
+  background-color: #28a745; /* Green color on hover */
+  transform: scale(1.1); /* Increase button size */
+}
+
+.delete-button {
+  background-color: #000;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.delete-button:hover {
+  background-color: #d41730; /* Green color on hover */
+  transform: scale(1.1); /* Increase button size */
+}
+
+
+
+/* show page css */
+
 
 
 
@@ -229,6 +474,10 @@ footer {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.card-img-top {
+  border-radius: 10px 10px 0 0; /* Rounds only the top corners of the image */
+}
+
 .all-listings a {
   text-decoration: none;
   color: black;
@@ -245,6 +494,132 @@ footer {
   background-color: rgba(0, 0, 0, 0.5);
   transition: 0.5s;
 }
+
+/* page not-found css */
+
+.not-found{
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#contr-btn{
+  border: 2px solid black;
+  font-size: 1.50rem;
+  margin-left: 10px;
+}
+
+#contr-btn:hover{
+  border: none;
+}
+
+/* add page stylels */
+/* Define the animations */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.login-cont {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-img {
+  width: 45%; /* Adjust to take half the width */
+  height: 77vh; /* Full viewport height */
+  background-image: url('../assets/login_image.webp');
+  background-size: cover; /* Ensure the image covers the entire area */
+  background-position: center; /* Center the image */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 16px 0 0 16px; /* Rounded corners on the left */
+  animation: slideInLeft 1s ease-out; /* Apply the animation */
+}
+
+.form-style {
+  width: 50%; /* Adjust to take the other half */
+  height: 77vh;
+  background: rgba(255, 255, 255, 0.15); /* Increased transparency */
+  backdrop-filter: blur(15px); /* Stronger blur for the glass effect */
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 0 16px 16px 0; /* Rounded corners on the right */
+  padding: 1rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for the frosted effect */
+  animation: slideInRight 1s ease-out; /* Apply the animation */
+}
+
+
+/* home-glass-container css */
+.glass-container-list {
+  backdrop-filter: blur(15px); /* Blur for glass effect */
+  -webkit-backdrop-filter: blur(15px); /* For WebKit browsers */
+  border-radius: 16px; /* Rounded corners */
+  padding: 1rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 2rem 0; /* Spacing around the container */
+  overflow: hidden; /* Ensure the container wraps the content */
+  background-size: cover; /* Cover the container */
+  background-position: center; /* Center the image */
+}
+
+
+.all-listings {
+  display: flex;
+  flex-wrap: wrap; /* Ensure the cards wrap to the next line */
+  gap: 1rem; /* Spacing between cards */
+}
+
+.listing-card {
+  background: rgba(255, 255, 255, 0.1); /* Slight transparency on the card */
+  backdrop-filter: blur(10px); /* Apply blur to cards */
+  -webkit-backdrop-filter: blur(10px); /* For WebKit browsers */
+  border-radius: 8px; /* Rounded corners on cards */
+  overflow: hidden; /* Ensure no overflow */
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow on cards */
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Example usage of animation */
+.element-to-animate {
+  animation: slideInFromLeft 0.5s ease-out;
+}
+
+
+
 
 /* edit page  */
 
@@ -271,6 +646,44 @@ footer {
   margin-top: 3px; /* Adjust checkbox positioning */
 }
 
+/* map and review boxes */
+.glass-container {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 20px 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Individual Glass Boxes for Map and Review Sections */
+.glass-box {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 20px;
+}
+
+/* Additional Spacing and Styling */
+.glass-box .row {
+  margin-bottom: 15px;
+}
+
+.add-review-button{
+  &:hover{
+    background-color: #74c0fc;
+    color: #f7f7f7;
+  }
+}
+
 
 /* map  */
 
@@ -278,6 +691,13 @@ footer {
   height: 70vh;
   width: 100vh;
   margin: 1rem auto;
+}
+
+.map-img{
+  background-image: url('../assets/mobile-map-and-navigation.png');
+  background-size: cover;
+  background-position: center;
+  object-fit: cover;
 }
 
 /* make #map responsive */
@@ -421,6 +841,88 @@ footer {
   }
 }
 
+
+/* glas-text */
+.glas-cont {
+  display: flex;
+  align-items: center;
+  margin-left: 400px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.glas-text {
+  text-align: center;
+  overflow: hidden;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.glas-text:first-of-type {
+  animation: showupglas 7s infinite;
+}
+
+.glas-text:last-of-type {
+  width: 0px;
+  animation: revealglas 7s infinite;
+}
+
+.glas-text:last-of-type span {
+  margin-left: -355px;
+  animation: slideinglas 7s infinite;
+}
+
+@keyframes showupglas {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideinglas {
+  0% {
+    margin-left: -800px;
+  }
+  20% {
+    margin-left: -800px;
+  }
+  35% {
+    margin-left: -150px;
+  }
+  100% {
+    margin-left: -150px;
+  }
+}
+
+@keyframes revealglas {
+  0% {
+    opacity: 0;
+    width: 0px;
+  }
+  20% {
+    opacity: 1;
+    width: 0px;
+  }
+  30% {
+    width: 355px;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    width: 355px;
+  }
+}
+
 /* Ai  */
 
 .ask-ai i{
@@ -431,3 +933,4 @@ footer {
     color: #007bff;
   }
 }
+

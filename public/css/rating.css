@@ -1,3 +1,21 @@
+/* alternate reviews  */
+
+.review-left {
+  float: left;
+  clear: left;
+}
+
+.review-right {
+  float: right;
+  clear: right;
+}
+
+.card {
+  width: 45%;
+}
+
+
+
 .starability-result {
     position: relative;
     width: 150px;
