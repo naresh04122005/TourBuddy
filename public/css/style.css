@@ -420,3 +420,14 @@ footer {
     width: 355px;
   }
 }
+
+/* Ai  */
+
+.ask-ai i{
+  font-size: 2rem;
+  color: #74c0fc;
+
+  &:hover{
+    color: #007bff;
+  }
+}

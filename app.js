@@ -158,6 +158,9 @@ app.use("/community", require("./routes/community.route"));
 // places routes
 app.use("/places", placesRoute);
 
+//ai route
+app.use("/ai", require("./routes/ai.route"));
+
 // user routes
 app.use("/users", require("./routes/users.route"));
 
