@@ -6,7 +6,7 @@ This web platform facilitates group travel by allowing users to list and review 
 
 ## API Reference
 
-1) Hugging Face
+1) Gemini Api
 2) mapbox
 3) open wether
 4) cloudnary
