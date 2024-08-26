@@ -11,6 +11,7 @@ const ejsMate = require("ejs-mate");
 var cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -22,9 +23,11 @@ const saveRedirectUrl = require("./utils/redirectUrl");
 const http = require("http");
 const server = http.createServer(app);
 
-
 // Socket.IO connection handling
 require("./socket/socket")(server);
+
+// MongoDB URI
+const dbUrl = process.env.ATLAS_DB_URL;
 
 // Connect To Database
 main()
@@ -32,7 +35,7 @@ main()
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017/tourBuddy");
+  await mongoose.connect(dbUrl);
 }
 
 //Milddleware setup
@@ -51,8 +54,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Session Store
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SESSION_SECRET,
+  },
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on("error", function (e) {
+  console.log("Session Store Error", e);
+});
+
 // Express Session Options
 const options = {
+  store,
   secret: process.env.SESSION_SECRET || "djsjfdshfdkfdfdgjbdvdhvdbds",
   resave: false,
   saveUninitialized: true,
