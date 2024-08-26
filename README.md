@@ -40,3 +40,5 @@ Contributers:-
 - Description generation with AI
 - Rating and Review system
 - Filtered Search
+- Location
+- Weather Report
