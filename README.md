@@ -81,7 +81,7 @@ TourBuddy is a comprehensive web platform that facilitates group travel by conne
    
 
 3. *Create a .env file in the root directory with the following variables*
-   
+   ```
    NODE_ENV=development
    ATLAS_DB_URL=your_mongodb_connection_string
    SESSION_SECRET=your_session_secret
@@ -108,7 +108,7 @@ TourBuddy is a comprehensive web platform that facilitates group travel by conne
    # Email (for verification)
    GMAIL_USER=your_gmail_address
    GMAIL_PASS=your_gmail_app_password
-   
+   ```
 
 4. *Start the server*
    bash
